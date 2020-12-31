@@ -1,0 +1,145 @@
+/*
+|––––––––––––––––––––––––––––––––––––––––––––––––––
+| BASE: Buttons 
+|––––––––––––––––––––––––––––––––––––––––––––––––––
+|
+| The button or submit should by default have button styles,
+| but once a class is put on them, they should be wiped of styles so you dont have to backpedal.
+|
+| If you want to put a class on the button but keep the default styles,
+| just add the button class to the classes you want.
+|
+*/
+
+button {
+  display: inline-block;
+  outline: none;
+  border: none;
+  background-color: transparent;
+  padding: 0;
+  color: $background;
+  cursor: pointer;
+}
+
+
+
+.btn {
+  $self: &;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+  min-width: 8rem;
+  border: 2px solid $link_color;
+  border-radius: $round;
+  background-color: $link_color;
+  padding: 0.6rem 1.4rem 0.6rem;
+  letter-spacing: 2px;
+  line-height: 1;
+  font-family: $meta_font;
+  font-size: 0.8rem;
+  font-weight: bold;
+  color: $background;
+  text-align: center;
+  text-decoration: none;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transition: border-color 300ms ease-in-out,
+              background-color 300ms ease-in-out,
+              color 300ms ease-in-out;
+  user-select: none;
+  cursor: pointer;
+
+  &:hover,
+  &:focus {
+    outline: none;
+    border-color: $link_hover;
+    background-color: $link_hover;
+    color: $background;
+  }
+
+  &[disabled] {
+    opacity: 0.8;
+    cursor: not-allowed;
+
+    &:hover,
+    &:focus {
+      outline: none;
+      border-color: $link_color;
+      background-color: $link_color;
+      color: $background;
+    }
+  }
+
+  // === button types === //
+  
+  // border button //
+  &--border {
+    border-color: $link_color;
+    background: transparent;
+    padding: 0.65rem 1.4rem 0.65rem;
+    font-size: 0.7rem;
+    color: $link_color;
+    
+    &:hover,
+    &:focus {
+      border-color: $link_hover;
+      background-color: transparent;
+      color: $link_hover;
+    }
+  }
+
+  // slim button //
+  &--sm,
+  &--slim {
+    min-width: 7rem;
+    border-width: 1px;
+    padding: 0.4rem 1.2rem 0.4rem;
+    font-size: 0.7rem;
+    font-weight: normal;
+
+    &#{$self}--border {
+      padding: 0.45rem 1.2rem 0.45rem;
+      font-size: 0.6rem;
+    }
+  }
+
+  // phat button //
+  &--lg,
+  &--phat {
+    min-width: 12rem;
+    border-width: 2px;
+    padding: 0.85rem 1.6rem 0.85rem;
+    font-size: 0.9rem;
+    font-weight: bold;
+
+    &#{$self}--border {
+      padding: 0.9rem 2.4rem 0.9rem;
+      font-size: 0.8rem;
+    }
+  }
+
+  // stout
+  &--stout {
+    min-width: unset;
+    padding-right: 1.1rem;
+    padding-left: 1.1rem;
+  }
+
+  // === button components === //
+  .icon {
+    display: inline-block;
+    max-width: 1.2rem;
+
+    &:first-child {
+      margin-right: 1em;
+      margin-left: 0;
+    }
+    &:last-child {
+      margin-right: 0;
+      margin-left: 1em;
+    }
+  }
+}
+
+// ===== site specific ===== //
