@@ -15,7 +15,7 @@
     color: inherit;
 
     &:hover,
-    &:active {
+    &:focus {
       color: $link_color;
     }
   }

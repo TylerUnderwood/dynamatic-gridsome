@@ -25,7 +25,6 @@ body {
   margin: 0;
   background-color: $background;
   line-height: 1;
-  font-size: 1rem;
   font-weight: normal;
   font-family: $copy_font;
   text-rendering: optimizeLegibility;
@@ -51,6 +50,10 @@ body {
 
 .scroll-lock {
   overflow: hidden !important;
+}
+
+#app {
+  min-height: 100vh;
 }
 
 #site {

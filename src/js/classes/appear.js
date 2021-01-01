@@ -24,8 +24,6 @@ class Appear
       let time = element.getAttribute('appear-delay');
       element.style.transitionDelay =  time + 'ms';
     })
-
-    return;
   }
 
   delayGroupedElements() {
@@ -48,8 +46,6 @@ class Appear
         element.style.transitionDelay =  this.groupInterval * index + 'ms';
       });
     })
-
-    return;
   }
 
   checkForWithinFirePosition( element ) {
@@ -65,8 +61,6 @@ class Appear
     if ( this.checkForWithinFirePosition( element ) ) {
       element.dataset.state = 'active';
     }
-
-    return;
   }
 
   listenForAnimationTrigger() {
@@ -79,8 +73,6 @@ class Appear
         this.runAnimation( element );
       }
     });
-
-    return;
   }
 
   init() {
@@ -98,6 +90,6 @@ class Appear
   }
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-  new Appear().init();
-});
+// document.addEventListener("DOMContentLoaded", () => {
+//   new Appear().init();
+// });

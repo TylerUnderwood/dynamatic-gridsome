@@ -1,7 +1,7 @@
 //////////////////////////////
 // Modal
 
-class Modal
+export default class Modal
 {
   constructor( elementId ) {
     this.id = elementId;
@@ -10,6 +10,7 @@ class Modal
     this.openButtons = document.querySelectorAll(`[open*="${elementId}"]`);
     this.closeButtons = document.querySelectorAll(`[close*="${elementId}"]`);
     this.allButtonsArray = this.getAllButtonsArray();
+    this.activatingButton = this.openButtons[0] ? this.openButtons[0] : this.toggleButtons[0];
     this.isActive = false;
     this.isAnimating = false;
     this.duration = this.modal.dataset.duration ? this.modal.dataset.duration : 300;
@@ -29,55 +30,67 @@ class Modal
   }
   
   turnFocusTrap( toggle ) {
-    const focusableList = `
-            a:not([disabled]), 
-            button:not([disabled]), 
-            textarea:not([disabled]), 
-            input:not([disabled]), 
-            select:not([disabled])`,
-          focusableEls = this.modal.querySelectorAll(focusableList),
-          firstFocusableEl = focusableEls[0],
-          lastFocusableEl = focusableEls[focusableEls.length - 1];
+    const focusableList = `a[href]:not([disabled]), button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled])`,
+          focusableElements = this.modal.querySelectorAll(focusableList),
+          firstFocusableElements = focusableElements[0],
+          lastFocusableElements = focusableElements[focusableElements.length - 1];
     
     const tabListener = (event) => {
+      // console.log("tab pressed")
       let isTabPressed = ( event.key === 'Tab' || event.keyCode === '9' );
 
       if (!isTabPressed) { 
         return; 
       }
 
+      // console.log(document.activeElement)
+
       if ( event.shiftKey ) /* shift + tab */ {
-        if (document.activeElement === firstFocusableEl) {
-          lastFocusableEl.focus();
+        if (document.activeElement === firstFocusableElements) {
+          lastFocusableElements.focus();
           event.preventDefault();
         }
       } else /* tab */ {
-        if (document.activeElement === lastFocusableEl) {
-          firstFocusableEl.focus();
+        if (document.activeElement === lastFocusableElements) {
+          firstFocusableElements.focus();
           event.preventDefault();
         }
       }
     }
 
     if ( toggle === "on" ) {
+      // console.log(`focus trap on ${this.modal.id}`)
+      // console.log(`focusing on ${firstFocusableElements}`)
+      // console.log(focusableElements.forEach( elem => elem.classList))
+      firstFocusableElements.focus();
       this.modal.addEventListener('keydown', tabListener, false )
     } 
     if ( toggle === "off" ) {
-      this.modal.addEventListener('keydown', tabListener, false )
+      this.modal.removeEventListener('keydown', tabListener, false )
+      this.activatingButton.focus();
     }
   }
 
-  escEvent() {
-    document.addEventListener( 'keydown', (event) => {
-      let isEscPressed = event.keyCode == '27' || event.key === "Escape"
+  turnEscEvent( toggle ) {
+    const escListener = (event) => {
+      let isEscPressed =  event.key === "Escape" || event.keyCode == '27'
+
       if ( !isEscPressed ) {
         return;
       }
+
       if ( this.isActive ) {
         event.preventDefault();
         this.deactivate()
       }
-    })
+    }
+
+    if ( toggle === "on" ) {
+      document.addEventListener('keydown', escListener, false )
+    } 
+    if ( toggle === "off" ) {
+      document.removeEventListener('keydown', escListener, false )
+    }
   }
   
   getAllButtonsArray() {
@@ -118,15 +131,18 @@ class Modal
     this.isActive = true;
     document.body.classList.add('scroll-lock');
     this.turnFocusTrap( "on" );
+    this.turnEscEvent( "on" );
   }
 
   modalIsInactive() {
     this.isActive = false;
     document.body.classList.remove('scroll-lock');
     this.turnFocusTrap( "off" );
+    this.turnEscEvent( "off" );
   }
   
-  activate() {
+  activate( button ) {
+    this.activatingButton = button 
     this.setStateActivating();
     this.modalIsActive();
 
@@ -189,17 +205,15 @@ class Modal
       this.setStateInactive();
     }
 
-    this.escEvent()
-
     this.toggleButtons.forEach( (button) => {
       this.buttonAction( button, () => {
-        !this.isActive ? this.activate() : this.deactivate()
+        !this.isActive ? this.activate( button ) : this.deactivate()
       })
     });
     
     this.openButtons.forEach( (button) => {
       this.buttonAction( button, () => {
-        !this.isActive ? this.activate() : null
+        !this.isActive ? this.activate( button ) : null
       })
     });
     

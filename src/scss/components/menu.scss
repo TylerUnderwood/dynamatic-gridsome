@@ -63,7 +63,7 @@ $menu_buffer: 1em;
     display: flex;
     flex-direction: column;
     overflow-x: hidden;
-    overflow-y: scroll;
+    overflow-y: auto;
 
     // these match the fading buffers for the main nav
     &::before,
